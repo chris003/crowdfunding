@@ -1,0 +1,268 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<ui:define name="title">Description du projet #{projectsView.project.entitled}</ui:define>
+	<ui:define name="content">
+		<main role="main" class="container">
+			<h1 id="projectTitle"
+				class="secondaryColorTheme font-weight-bold text-center">#{projectsView.project.entitled}</h1>
+			<h3 id="projectSlogan" class="text-center">#{projectsView.project.slogan}</h3>
+			<br />
+			<div class="row">
+				<div class="col-8">
+					<image
+						src="/crowdfunding/images/#{projectsView.project.imageEntitled}"
+						width="100%" height="500rem"></image>
+				</div>
+				<div class="col-4">
+					<div>
+						<h1 style="display: inline;"
+							class="secondaryColorTheme font-weight-bold">
+							<span class="currency">#{projectsView.project.totalContributions}</span>€
+						</h1>
+						<h5 class="secondaryColorTheme font-weight-bold"
+							style="display: inline;">collectés</h5>
+					</div>
+					<hr align="left" width="50%" />
+					<div>
+						<h1 style="display: inline;"
+							class="secondaryColorTheme font-weight-bold">
+							<span class="currency">#{projectsView.project.amount}</span>€
+						</h1>
+						<h5 class="secondaryColorTheme font-weight-bold"
+							style="display: inline;">attendus</h5>
+					</div>
+					<hr align="left" width="50%" />
+					<div>
+						<h1 style="display: inline;"
+							class="secondaryColorTheme font-weight-bold">#{projectsView.project.totalContributors}</h1>
+						<h5 class="secondaryColorTheme font-weight-bold"
+							style="display: inline;">contributeur(s)</h5>
+					</div>
+					<hr align="left" width="50%" />
+					<div>
+						<h1 style="display: inline;"
+							class="secondaryColorTheme font-weight-bold">#{projectsView.project.remainingDays}</h1>
+						<h5 class="secondaryColorTheme font-weight-bold"
+							style="display: inline;">jour(s) restant(s)</h5>
+					</div>
+					<hr align="left" width="50%" />
+					<div class="progress">
+						<div class="progress-bar dynamic#{project.id}" role="progressbar"
+							aria-valuenow="#{projectsView.project.percentContributions}"
+							aria-valuemin="0" aria-valuemax="100"
+							style="background-color: rgb(51, 204, 204); width: #{projectsView.project.percentContributions};" />
+						#{projectsView.project.percentContributions}%
+					</div>
+					<hr align="left" width="50%" />
+					<small class="font-weight-bold">Les contributions seront
+						terminées le #{projectsView.project.frenchEndingDate}</small>
+					<hr align="left" width="50%" />
+					<c:set var="userMail" scope="session" value="#{User.email}" />
+					<c:set var="userMailProject" scope="session"
+						value="#{projectsView.project.user.email}" />
+					<c:set var="remainingDays" scope="session"
+						value="#{projectsView.project.remainingDays}" />
+					<c:set var="existContribution" scope="session"
+						value="#{projectsView.project.existContributor(User)}" />
+					<c:set var="contribution" scope="session"
+						value="#{projectsView.project.getUserContribution(User)}" />
+					<c:choose>
+						<c:when
+							test="${userMail eq userMailProject or remainingDays == 0 or userMail == 'admin@decrooscrowdfunding.be'}">
+						</c:when>
+						<c:when test="${empty User}">
+							<a class="btn btn-primary" href="/crowdfunding/signin.xhtml">Contribuer
+								au projet</a>
+						</c:when>
+						<c:when test="${not empty User and existContribution == false}">
+							<a class="btn btn-primary contribModal"
+								data-target="#contribModalProject" data-toggle="modal" href="#">Contribuer
+								au projet</a>
+							<!-- Modal -->
+							<div class="modal fade" id="contribModalProject" role="dialog">
+								<div class="modal-dialog">
+									<h:form class="was-validated" id="addDonationForm">
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title">Contribuer au projet</h4>
+												<button type="button" class="close" data-dismiss="modal">
+													<i class="fas fa-times"></i>
+												</button>
+											</div>
+											<div class="modal-body">
+												<div class="form-group">
+													<label class="font-weight-bold"
+														for="addDonationForm\:amount">Montant du don :</label>
+													<div class="input-group">
+														<input jsf:id="amount" type="number" step="0.01"
+															min="0.01" value="1.00"
+															jsf:value="#{projectsView.donationAmount}"
+															class="form-control" placeholder="Montant du don"
+															jsf:required="true" required="required" />
+														<div class="input-group-append">
+															<span class="input-group-text"><i
+																class="fas fa-euro-sign"></i></span>
+														</div>
+													</div>
+													<div class="invalid-feedback">Veuillez indiquer le
+														montant de votre don !</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<input type="submit"
+													jsf:action="#{projectsView.addDonation}"
+													class="btn btn-primary" value="Valider le don" />
+												<button class="btn btn-secondary" data-dismiss="modal"
+													type="button">Annuler</button>
+											</div>
+										</div>
+									</h:form>
+								</div>
+							</div>
+						</c:when>
+						<c:when test="${not empty User and existContribution == true}">
+							<a class="btn btn-primary contribModal"
+								data-target="#modifieContribModalProject" data-toggle="modal"
+								href="#">Mon don</a>
+							<!-- Modal -->
+							<div class="modal fade" id="modifieContribModalProject"
+								role="dialog">
+								<div class="modal-dialog">
+									<h:form class="was-validated" id="modifieDonationForm">
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title">Montant de votre don :</h4>
+												<button type="button" class="close" data-dismiss="modal">
+													<i class="fas fa-times"></i>
+												</button>
+											</div>
+											<div class="modal-body">
+												<div class="form-group">
+													<label class="font-weight-bold"
+														for="modifieDonationForm\:amount">Montant du don
+														(changez la valeur pour la modifier) :</label>
+													<div class="input-group">
+														<input jsf:id="amount" type="number" step="0.01"
+															min="0.01" value="#{contribution}"
+															jsf:value="#{projectsView.donationAmount}"
+															class="form-control" placeholder="Montant du don"
+															jsf:required="true" required="required" />
+														<div class="input-group-append">
+															<span class="input-group-text"><i
+																class="fas fa-euro-sign"></i></span>
+														</div>
+													</div>
+													<div class="invalid-feedback">Veuillez indiquer le
+														montant de votre don !</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<input type="submit"
+													jsf:action="#{projectsView.modifieDonation}"
+													class="btn btn-primary" value="Modifier le don" />
+												<button class="btn btn-secondary" data-dismiss="modal"
+													type="button">Annuler</button>
+											</div>
+										</div>
+									</h:form>
+								</div>
+							</div>
+							<a class="btn btn-danger removeContribModal"
+								data-target="#removeContribModalProject" data-toggle="modal"
+								href="#">Supprimer mon don</a>
+							<!-- Modal -->
+							<div class="modal fade" id="removeContribModalProject"
+								role="dialog">
+								<div class="modal-dialog">
+									<h:form class="was-validated" id="removeDonationForm">
+										<!-- Modal content-->
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title">Retirer mon don</h4>
+												<button type="button" class="close" data-dismiss="modal">
+													<i class="fas fa-times"></i>
+												</button>
+											</div>
+											<div class="modal-body">
+												<p>
+													Etes-vous sûr de vouloir retirer votre don de <span
+														class="currency">#{contribution}</span>€ ?
+												</p>
+											</div>
+											<div class="modal-footer">
+												<h:commandButton value="Supprimer"
+													action="#{projectsView.removeDonation}"
+													class="btn btn-danger" />
+												<a class="btn btn-secondary" data-dismiss="modal"
+													type="button">Annuler</a>
+											</div>
+										</div>
+									</h:form>
+								</div>
+							</div>
+						</c:when>
+					</c:choose>
+					<a class="btn btn-secondary" href="/crowdfunding/" role="button">Retour</a>
+				</div>
+			</div>
+			<hr width="100%" />
+			<div class="row">
+				<div class="col-4">
+					<h3 class="secondaryColorTheme text-left">Description du
+						projet</h3>
+					<div class="text-secondary font-weight-bold">#{projectsView.project.description}</div>
+				</div>
+				<div class="col-4">
+					<h3 class="secondaryColorTheme text-left">Porteur de projet</h3>
+					<div class="text-secondary font-weight-bold">#{projectsView.project.projectLeader}</div>
+				</div>
+				<div class="col-4">
+					<h3 class="secondaryColorTheme text-left">Contact</h3>
+					<div class="text-left font-weight-bold">
+						<ul style="margin: 0; padding: 0;">
+							<li>#{projectsView.project.email}</li>
+							<li>#{projectsView.project.telephone}</li>
+							<li>#{projectsView.project.address}</li>
+						</ul>
+					</div>
+				</div>
+				<hr width="100%" />
+			</div>
+
+		</main>
+	</ui:define>
+	<ui:define name="scriptJS">
+		<script type="text/javascript">
+			$(document).ready(
+					function() {
+						var current_progress = 0;
+						var interval = setInterval(function() {
+							current_progress += 1;
+							$(".dynamic#{project.id}").css("width", current_progress + "%")
+							if (current_progress >= $(".dynamic").attr(
+									"aria-valuenow"))
+								clearInterval(interval);
+						}, 10);
+						$(".flashMessage").delay(5000).slideUp(3000);
+						title = $("#projectTitle").text();
+						slogan = $("#projectSlogan").text();
+						title = title.toUpperCase();
+						slogan = slogan.toUpperCase();
+						$("#projectTitle").text(title);
+						$("#projectSlogan").text(slogan);
+						$(".currency").each(function() {
+							value = $(this).text();
+							value = parseFloat(value).toLocaleString();
+							$(this).text(value);
+						});
+					});
+		</script>
+	</ui:define>
+</ui:composition>

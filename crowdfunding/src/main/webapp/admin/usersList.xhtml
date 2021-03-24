@@ -1,0 +1,168 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<ui:define name="title">Liste des utilisateurs (#{usersAdminView.getUsers().size()})</ui:define>
+	<ui:define name="content">
+		<main role="main" class="container">
+			<h1 class="text-center">Liste des utilisateurs
+				(#{usersAdminView.getUsers().size()})</h1>
+			<div>
+				<small>
+					<table id="dtUsers"
+						class="table table-stripped table-bordered table-hover"
+						style="width: 100%">
+						<thead>
+							<tr>
+								<th>Prénom</th>
+								<th>Nom</th>
+								<th>E-mail</th>
+								<th>Téléphone</th>
+								<th>Adresse</th>
+								<th class="text-center">Dons</th>
+								<th class="text-center">Projets</th>
+								<th class="text-center">Supprimer</th>
+								<th class="text-center">Détail</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ui:repeat var="user" value="#{usersAdminView.getUsers()}"
+								style="border:visible">
+								<tr>
+									<td>#{user.firstName}</td>
+									<td>#{user.lastName}</td>
+									<td>#{user.email}</td>
+									<td>#{user.telephone}</td>
+									<td>#{user.address}</td>
+									<td><h:form>
+											<h:commandLink value="Dons"
+												action="#{usersAdminView.displayDonationsList(user)}"
+												class="btn btn-sm btn-primary"></h:commandLink>
+										</h:form></td>
+									<td><h:form>
+											<h:commandLink value="Projets"
+												action="#{usersAdminView.displayProjectsList(user)}"
+												class="btn btn-sm btn-primary"></h:commandLink>
+										</h:form></td>
+									<td><a class="btn btn-sm btn-danger removeUserModal"
+										data-target="#removeUserModal#{usersAdminView.counter}"
+										data-toggle="modal" href="#">Supprimer</a> <!-- Modal -->
+										<div class="modal fade"
+											id="removeUserModal#{usersAdminView.counter}" role="dialog">
+											<div class="modal-dialog">
+												<h:form class="was-validated" id="removeUserForm">
+													<!-- Modal content-->
+													<div class="modal-content">
+														<div class="modal-header">
+															<h4 class="modal-title">Supprimer l'utilisateur
+																"#{user.firstName} #{user.lastName}"</h4>
+															<button type="button" class="close" data-dismiss="modal">
+																<i class="fas fa-times"></i>
+															</button>
+														</div>
+														<div class="modal-body">
+															<p>Etes-vous sûr de vouloir supprimer l'utilisateur
+																"#{user.firstName} #{user.lastName}" ?</p>
+														</div>
+														<div class="modal-footer">
+															<h:commandButton value="Supprimer"
+																action="#{usersAdminView.removeUser(user)}"
+																class="btn btn-danger" />
+															<button class="btn btn-secondary" data-dismiss="modal"
+																type="button">Annuler</button>
+														</div>
+													</div>
+												</h:form>
+											</div>
+										</div></td>
+									<td><h:form>
+											<h:commandLink value="Détail"
+												action="#{usersAdminView.displayUserDescription(user)}"
+												class="btn btn-sm btn-primary"></h:commandLink>
+										</h:form></td>
+								</tr>
+							</ui:repeat>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Prénom</th>
+								<th>Nom</th>
+								<th>E-mail</th>
+								<th>Téléphone</th>
+								<th>Adresse</th>
+								<th class="text-center">Dons</th>
+								<th class="text-center">Projets</th>
+								<th class="text-center">Supprimer</th>
+								<th class="text-center">Détail</th>
+							</tr>
+						</tfoot>
+					</table>
+				</small>
+			</div>
+		</main>
+	</ui:define>
+	<ui:define name="scriptJS">
+		<script type="text/javascript">
+			$(document).ready(function() {
+				setTimeout(function() {
+					location.reload();
+				}, 30000);
+
+				$('#dtUsers').DataTable({
+					"order" : [ [ 0, "asc" ], [ 1, "asc" ] ],
+					"columnDefs" : [ {
+						"targets" : [ 3 ],
+						className : 'dt-body-right'
+					}, {
+						"targets" : [ 5 ],
+						className : 'dt-body-center',
+						"width" : "8%",
+						"orderable" : false
+					}, {
+						"targets" : [ 6 ],
+						className : 'dt-body-center',
+						"width" : "8%",
+						"orderable" : false
+					}, {
+						"targets" : [ 7 ],
+						className : 'dt-body-center',
+						"width" : "8%",
+						"orderable" : false
+					}, {
+						"targets" : [ 8 ],
+						className : 'dt-body-center',
+						"width" : "8%",
+						"orderable" : false
+					} ],
+					"language" : {
+						"sProcessing" : "Traitement en cours ...",
+						"sLengthMenu" : "Afficher _MENU_ lignes",
+						"sZeroRecords" : "Aucun résultat trouvé",
+						"sEmptyTable" : "Aucune donnée disponible",
+						"sInfo" : "Lignes _START_ à _END_ sur _TOTAL_",
+						"sInfoEmpty" : "Aucune ligne affichée",
+						"sInfoFiltered" : "(Filtrer un maximum de _MAX_)",
+						"sInfoPostFix" : "",
+						"sSearch" : "Chercher:",
+						"sUrl" : "",
+						"sInfoThousands" : ",",
+						"sLoadingRecords" : "Chargement...",
+						"oPaginate" : {
+							"sFirst" : "Premier",
+							"sLast" : "Dernier",
+							"sNext" : "Suivant",
+							"sPrevious" : "Précédent"
+						},
+						"oAria" : {
+							"sSortAscending" : ": Trier par ordre croissant",
+							"sSortDescending" : ": Trier par ordre décroissant"
+						}
+					}
+				});
+				$.fn.dataTable.ext.errMode = 'none';
+			});
+		</script>
+	</ui:define>
+</ui:composition>

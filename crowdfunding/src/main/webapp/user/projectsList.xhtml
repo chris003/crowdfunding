@@ -1,0 +1,132 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="title">Liste de mes projets (#{projectsView.getProjectsByUser(User).size()})</ui:define>
+	<ui:define name="content">
+		<main role="main" class="container">
+			<div class="album py-5 bg-light">
+				<h1 class="text-center">Liste de mes projets
+					(#{projectsView.getProjectsByUser(User).size()})</h1>
+				<br />
+				<div class="container">
+					<h:form class="w4-row-padding w4-grayscale">
+						<div class="row">
+							<ui:repeat var="project"
+								value="#{projectsView.getProjectsByUser(User)}"
+								style="border:visible">
+								<div class="col-md-4">
+									<div class="card mb-4 shadow-sm">
+										<image src="/crowdfunding/images/#{project.imageEntitled}"
+											width="100%" height="225"></image>
+										<div class="card-body">
+											<p class="card-text">
+											<h5 class=" secondaryColorTheme font-weight-bold">#{project.entitled}</h5>
+											<div class="text-secondary"
+												style="height: 100px; overflow: hidden; text-overflow: ellipsis;">#{project.description}</div>
+											<hr align="left" width="50%" />
+											<div class="text-secondary">
+												<h5>
+													Restants: <span class="secondaryColorTheme">#{project.remainingDays}
+														jours</span>
+												</h5>
+											</div>
+											<hr align="left" width="50%" />
+											<div class="text-secondary">
+												<h5>
+													Montant levé: <span class="secondaryColorTheme"><span
+														class="currency">#{project.totalContributions}</span>€</span>
+												</h5>
+											</div>
+											<hr align="left" width="50%" />
+											</p>
+											<div
+												class="d-flex justify-content-between align-items-center">
+												<div class="btn-group">
+
+													<h:commandLink value="Détail"
+														action="#{projectsView.displayProjectDescription(project)}"
+														class="btn btn-sm btn-outline-secondary"></h:commandLink>
+													<h:commandLink value="Donations"
+														action="#{projectsView.displayDonationsList(project)}"
+														class="btn btn-sm btn-outline-secondary"></h:commandLink>
+													<a class="btn btn-sm btn-outline-secondary removingModal"
+														data-target="#removingModal#{project.id}"
+														data-toggle="modal" href="#">Supprimer</a>
+													<!-- Modal -->
+													<div class="modal fade" id="removingModal#{project.id}"
+														role="dialog">
+														<div class="modal-dialog">
+
+															<!-- Modal content-->
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h4 class="modal-title">Supression du projet
+																		"#{project.entitled}"</h4>
+																	<button type="button" class="close"
+																		data-dismiss="modal">
+																		<i class="fas fa-times"></i>
+																	</button>
+																</div>
+																<div class="modal-body">
+																	<p>Etes-vous sûr de vouloir supprimer le projet
+																		"#{project.entitled}" ?</p>
+																</div>
+																<div class="modal-footer">
+																	<h:commandButton value="Supprimer"
+																		action="#{projectsView.removeProject(project)}"
+																		class="btn btn-danger" />
+																	<a class="btn btn-secondary" data-dismiss="modal"
+																		type="button">Annuler</a>
+																</div>
+															</div>
+
+														</div>
+													</div>
+												</div>
+											</div>
+											<br />
+											<div class="progress">
+												<div class="progress-bar dynamic#{project.id}" role="progressbar"
+													aria-valuenow="#{project.percentContributions}"
+													aria-valuemin="0" aria-valuemax="100"
+													style="background-color: rgb(51, 204, 204); width: #{project.percentContributions};" />
+												#{project.percentContributions}%
+											</div>
+										</div>
+									</div>
+								</div>
+							</ui:repeat>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</main>
+	</ui:define>
+	<ui:define name="scriptJS">
+		<script type="text/javascript">
+			$(document).ready(
+					function() {
+						var current_progress = 0;
+						var interval = setInterval(function() {
+							current_progress += 1;
+							$(".dynamic").css("width", current_progress + "%")
+							if (current_progress >= $(".dynamic#{project.id}").attr(
+									"aria-valuenow"))
+								clearInterval(interval);
+						}, 10);
+						$(".currency").each(function() {
+							value = $(this).text();
+							value = parseFloat(value).toLocaleString();
+							$(this).text(value);
+						});
+						setTimeout(function() {
+							location.reload();
+						}, 30000);
+					});
+		</script>
+	</ui:define>
+</ui:composition>

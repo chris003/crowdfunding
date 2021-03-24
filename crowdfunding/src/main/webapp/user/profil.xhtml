@@ -1,0 +1,119 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<ui:define name="title">Mon profil</ui:define>
+	<ui:define name="content">
+		<main role="main" class="container">
+			<h:form id="profilForm" class="was-validated">
+				<h1>Profil</h1>
+				<div class="form-group">
+					<label class="font-weight-bold" for="profilForm\:email">Adresse
+						e-mail :</label> <input jsf:id="email" type="email" readonly="true"
+						jsf:value="#{profilView.email}" class="form-control"
+						placeholder="E-mail" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer une adresse
+						e-mail !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="profilForm\:lastName">Nom
+						:</label> <input jsf:id="lastName" type="text"
+						jsf:value="#{profilView.lastName}" class="form-control"
+						placeholder="Nom" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un nom !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="profilForm\:firstName">Prénom
+						:</label> <input jsf:id="firstName" type="text"
+						jsf:value="#{profilView.firstName}" class="form-control"
+						placeholder="Prénom" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un prénom !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="profilForm\:telephone">Téléphone</label>
+					<input jsf:id="telephone" type="text"
+						jsf:value="#{profilView.telephone}" class="form-control"
+						placeholder="Téléphone" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un numéro de
+						téléphone !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="profilForm\:street">Rue
+						:</label> <input jsf:id="street" type="text"
+						jsf:value="#{profilView.street}" class="form-control"
+						placeholder="Rue" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un nom de rue !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="profilForm\:streetNum">Numéro
+						de rue :</label> <input jsf:id="streetNum" type="text"
+						jsf:value="#{profilView.streetNum}" class="form-control"
+						placeholder="Numéro de rue" jsf:required="true"
+						required="required" />
+					<div class="invalid-feedback">Veuillez entrer un numéro de
+						rue !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="profilForm\:postalCode">Code
+						postal :</label> <input jsf:id="postalCode" type="text"
+						jsf:value="#{profilView.postalCode}" class="form-control"
+						placeholder="Code postal" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un code postal
+						!</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="profilForm\:locality">Localité
+						:</label> <input jsf:id="locality" type="text"
+						jsf:value="#{profilView.locality}" class="form-control"
+						placeholder="Localité" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer une localité !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="profilForm\:country">Pays
+						:</label> <input jsf:id="country" type="text"
+						jsf:value="#{profilView.country}" class="form-control"
+						placeholder="Pays" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un pays !</div>
+				</div>
+				<a class="btn btn-primary updatingModal"
+					data-target="#updatingModalProfil" data-toggle="modal" href="#">Modifier
+					le profil</a>
+				<!-- Modal -->
+				<div class="modal fade" id="updatingModalProfil" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Modification du profil</h4>
+								<button type="button" class="close" data-dismiss="modal">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p>Veuillez confirmer la modification de votre profil</p>
+							</div>
+							<div class="modal-footer">
+								<input type="submit" jsf:action="#{profilView.modifie}"
+									class="btn btn-primary" value="Modifier le profil" />
+								<button class="btn btn-secondary" data-dismiss="modal"
+									type="button">Annuler</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</main>
+	</ui:define>
+	<ui:define name="scriptJS">
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".flashMessage").delay(5000).slideUp(3000);
+				$('#userNavItem').html();
+				$('#userNavItem').text(#{User.firstName}  + ' ' + #{User.lastName});
+			});
+		</script>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,165 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="title">Liste des dons de "#{usersAdminView.user.firstName} #{usersAdminView.user.lastName}"</ui:define>
+	<ui:define name="content">
+		<main role="main" class="container">
+			<h1 class="text-center">Liste des dons de
+				"#{usersAdminView.user.firstName} #{usersAdminView.user.lastName}"</h1>
+			<h5 class="text-center">
+				<a href="/crowdfunding/admin/usersList.xhtml">Liste des
+					utilisateurs</a>
+			</h5>
+			<div>
+				<small>
+					<table id="dtDonations"
+						class="table table-stripped table-bordered table-hover"
+						style="width: 100%">
+						<thead>
+							<tr>
+								<th>Projet</th>
+								<th>Date</th>
+								<th>Montant</th>
+								<th class="text-center">Supprimer</th>
+								<th class="text-center">Détail</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ui:repeat var="donation"
+								value="#{usersAdminView.getDonationsByUser(usersAdminView.user)}"
+								style="border:visible">
+								<tr>
+									<td>#{donation.project.entitled}</td>
+									<td>#{donation.frenchFormatDate}</td>
+									<td>#{donation.amount}</td>
+									<td><a class="btn btn-sm btn-danger removeDonationModal"
+										data-target="#removeDonationModal#{usersAdminView.counter}"
+										data-toggle="modal" href="#">Supprimer</a> <!-- Modal -->
+										<div class="modal fade"
+											id="removeDonationModal#{usersAdminView.counter}"
+											role="dialog">
+											<div class="modal-dialog">
+												<h:form class="was-validated" id="removeDonationForm">
+													<!-- Modal content-->
+													<div class="modal-content">
+														<div class="modal-header">
+															<h4 class="modal-title">Supprimer le don d'un
+																montant de #{donation.amount}€</h4>
+															<button type="button" class="close" data-dismiss="modal">
+																<i class="fas fa-times"></i>
+															</button>
+														</div>
+														<div class="modal-body">
+															<p>Etes-vous sûr de vouloir supprimer le don ?</p>
+														</div>
+														<div class="modal-footer">
+															<h:commandButton value="Supprimer"
+																action="#{usersAdminView.removeDonation(donation)}"
+																class="btn btn-danger" />
+															<button class="btn btn-secondary" data-dismiss="modal"
+																type="button">Annuler</button>
+														</div>
+													</div>
+												</h:form>
+											</div>
+										</div></td>
+									<td><h:form>
+											<h:commandLink value="Détail"
+												action="#{usersAdminView.displayDonationDescription(donation)}"
+												class="btn btn-sm btn-primary"></h:commandLink>
+										</h:form></td>
+								</tr>
+							</ui:repeat>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Projet</th>
+								<th>Date</th>
+								<th>Montant</th>
+								<th class="text-center">Supprimer</th>
+								<th class="text-center">Détail</th>
+							</tr>
+						</tfoot>
+					</table>
+				</small>
+			</div>
+		</main>
+	</ui:define>
+	<ui:define name="scriptJS">
+		<script type="text/javascript">
+			$(document)
+					.ready(
+							function() {
+								setTimeout(function() {
+									location.reload();
+								}, 30000);
+
+								$('#dtDonations')
+										.DataTable(
+												{
+													"columnDefs" : [
+															{
+																"targets" : [ 1 ],
+																className : 'dt-body-right'
+															},
+															{
+																"targets" : [ 2 ],
+																"render" : $.fn.dataTable.render
+																		.number(
+																				'.',
+																				',',
+																				2,
+																				'€'),
+																className : 'dt-body-right'
+															},
+															{
+																"targets" : [ 2 ],
+																className : 'dt-body-right'
+															},
+															{
+																"targets" : [ 3 ],
+																className : 'dt-body-center',
+																"width" : "8%",
+																"orderable" : false
+															},
+															{
+																"targets" : [ 4 ],
+																className : 'dt-body-center',
+																"width" : "8%",
+																"orderable" : false
+															} ],
+													"language" : {
+														"sProcessing" : "Traitement en cours ...",
+														"sLengthMenu" : "Afficher _MENU_ lignes",
+														"sZeroRecords" : "Aucun résultat trouvé",
+														"sEmptyTable" : "Aucune donnée disponible",
+														"sInfo" : "Lignes _START_ à _END_ sur _TOTAL_",
+														"sInfoEmpty" : "Aucune ligne affichée",
+														"sInfoFiltered" : "(Filtrer un maximum de _MAX_)",
+														"sInfoPostFix" : "",
+														"sSearch" : "Chercher:",
+														"sUrl" : "",
+														"sInfoThousands" : ",",
+														"sLoadingRecords" : "Chargement...",
+														"oPaginate" : {
+															"sFirst" : "Premier",
+															"sLast" : "Dernier",
+															"sNext" : "Suivant",
+															"sPrevious" : "Précédent"
+														},
+														"oAria" : {
+															"sSortAscending" : ": Trier par ordre croissant",
+															"sSortDescending" : ": Trier par ordre décroissant"
+														}
+													}
+												});
+
+								$.fn.dataTable.ext.errMode = 'none';
+							});
+		</script>
+	</ui:define>
+</ui:composition>

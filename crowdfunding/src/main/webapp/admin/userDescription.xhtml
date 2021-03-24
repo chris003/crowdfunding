@@ -1,0 +1,142 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<ui:define name="title">Détail de l'utilisateur "#{usersAdminView.user.firstName} #{usersAdminView.user.lastName}"</ui:define>
+	<ui:define name="content">
+		<main role="main" class="container">
+			<h:form id="userDetailForm" class="was-validated">
+				<h1>Détail de l'utilisateur "#{usersAdminView.user.firstName}
+					#{usersAdminView.user.lastName}"</h1>
+				<div class="form-group">
+					<label class="font-weight-bold" for="userDetailForm\:email">Adresse
+						e-mail :</label> <input jsf:id="email" type="email"
+						jsf:value="#{usersAdminView.email}" class="form-control"
+						readonly="true" placeholder="E-mail" jsf:required="true"
+						required="required" />
+					<div class="invalid-feedback">Veuillez entrer une adresse
+						e-mail !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="userDetailForm\:password">Mot
+						de passe :</label> <input jsf:id="password" type="password"
+						jsf:value="#{usersAdminView.password}" class="form-control"
+						placeholder="Mot de passe (facultatif)"
+						pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&amp;]).{10,30}$" />
+					<div class="invalid-feedback">Votre mot de passe doit au
+						moins contenir 10 caractères dont un chiffre, une minuscule, une
+						majuscule. et un caractère special !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold"
+						for="userDetailForm\:confirmPassword">Confirmation du mot
+						de passe :</label> <input jsf:id="confirmPassword" type="password"
+						jsf:value="#{usersAdminView.confirmPassword}" class="form-control"
+						placeholder="Confirmation du mot de passe (facultatif)"
+						pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&amp;]).{10,30}$" />
+					<div class="invalid-feedback">Votre mot de passe doit au
+						moins contenir 10 caractères dont un chiffre, une minuscule, une
+						majuscule. et un caractère special !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="userDetailForm\:lastName">Nom
+						:</label> <input jsf:id="lastName" type="text"
+						jsf:value="#{usersAdminView.lastName}" class="form-control"
+						placeholder="Nom" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un nom !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="userDetailForm\:firstName">Prénom
+						:</label> <input jsf:id="firstName" type="text"
+						jsf:value="#{usersAdminView.firstName}" class="form-control"
+						placeholder="Prénom" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un prénom !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="userDetailForm\:telephone">Téléphone
+						:</label> <input jsf:id="telephone" type="text"
+						jsf:value="#{usersAdminView.telephone}" class="form-control"
+						placeholder="Téléphone" jsf:required="true" required="required"
+						pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" />
+					<div class="invalid-feedback">Veuillez entrer un numéro de
+						téléphone !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="userDetailForm\:street">Rue
+						:</label> <input jsf:id="street" type="text"
+						jsf:value="#{usersAdminView.street}" class="form-control"
+						placeholder="Rue" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un nom de rue !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="userDetailForm\:streetNum">Numéro
+						de rue :</label> <input jsf:id="streetNum" type="text"
+						jsf:value="#{usersAdminView.streetNum}" class="form-control"
+						placeholder="Numéro de rue" jsf:required="true"
+						required="required" />
+					<div class="invalid-feedback">Veuillez entrer un numéro de
+						rue !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="userDetailForm\:postalCode">Code
+						postal :</label> <input jsf:id="postalCode" type="text"
+						jsf:value="#{usersAdminView.postalCode}" class="form-control"
+						placeholder="Code postal" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un code postal
+						!</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="userDetailForm\:locality">Localité
+						:</label> <input jsf:id="locality" type="text"
+						jsf:value="#{usersAdminView.locality}" class="form-control"
+						placeholder="Localité" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer une localité !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="userDetailForm\:country">Pays
+						:</label> <input jsf:id="country" type="text"
+						jsf:value="#{usersAdminView.country}" class="form-control"
+						placeholder="Pays" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un pays !</div>
+				</div>
+				<a class="btn btn-primary updatingModal"
+					data-target="#updatingModalUser" data-toggle="modal" href="#">Modifier</a>
+				<!-- Modal -->
+				<div class="modal fade" id="updatingModalUser" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Modification de l'utilisateur
+									"#{usersAdminView.user.firstName}
+									#{usersAdminView.user.lastName}"</h4>
+								<button type="button" class="close" data-dismiss="modal">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p>Veuillez confirmer la modification de l'utilisateur</p>
+							</div>
+							<div class="modal-footer">
+								<input type="submit" jsf:action="#{usersAdminView.modifie}"
+									class="btn btn-primary" value="Modifier" />
+								<button class="btn btn-secondary" data-dismiss="modal"
+									type="button">Annuler</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a class="btn btn-secondary"
+					href="/crowdfunding/admin/usersList.xhtml" role="button">Retour</a>
+			</h:form>
+		</main>
+	</ui:define>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".flashMessage").delay(5000).slideUp(3000);
+		});
+	</script>
+</ui:composition>

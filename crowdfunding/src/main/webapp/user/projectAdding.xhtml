@@ -1,0 +1,163 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<ui:define name="title">Ajouter un projet</ui:define>
+	<ui:define name="content">
+		<main role="main" class="container">
+			<h:form id="projectAddingForm" class="was-validated"
+				enctype="multipart/form-data">
+				<h1>Ajouter un projet</h1>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:entitled">Intitulé
+						:</label> <input jsf:id="entitled" type="text"
+						jsf:value="#{projectAddingView.entitled}" class="form-control"
+						placeholder="Intitulé" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un intitulé !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:slogan">Slogan
+						:</label> <input jsf:id="slogan" type="text"
+						jsf:value="#{projectAddingView.slogan}" class="form-control"
+						placeholder="Slogan" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un slogan !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold"
+						for="projectAddingForm\:description">Description :</label>
+					<textarea jsf:id="description"
+						jsf:value="#{projectAddingView.description}" rows="5"
+						class="form-control" placeholder="Description" jsf:required="true"
+						required="required" />
+					<div class="invalid-feedback">Veuillez entrer une description
+						!</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold"
+						for="projectAddingForm\:projectLeader">Porteur de projet :</label>
+					<textarea jsf:id="projectLeader" type="text"
+						jsf:value="#{projectAddingView.projectLeader}" rows="5"
+						class="form-control" placeholder="Porteur de projet"
+						jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez indiquer un porteur de
+						projet !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:amount">Montant
+						de la collecte :</label>
+					<div class="input-group">
+						<input jsf:id="amount" type="number" step="0.01" min="0.01"
+							value="1.00" jsf:value="#{projectAddingView.amount}"
+							class="form-control" placeholder="Montant de la collecte"
+							jsf:required="true" required="required" />
+						<div class="input-group-append">
+							<span class="input-group-text"><i class="fas fa-euro-sign"></i></span>
+						</div>
+					</div>
+					<div class="invalid-feedback">Veuillez indiquer un montant
+						pour la collecte !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:endingDate">Date
+						de fin:</label> <input jsf:id="endingDate" type="date"
+						jsf:value="#{projectAddingView.endingDate}" class="form-control"
+						placeholder="Date de fin" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer une date de fin
+						!</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:email">Adresse
+						e-mail :</label> <input jsf:id="email" type="email"
+						jsf:value="#{projectAddingView.email}" class="form-control"
+						placeholder="E-mail" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer une adresse
+						e-mail !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:telephone">Téléphone</label>
+					<input jsf:id="telephone" type="text"
+						jsf:value="#{projectAddingView.telephone}" class="form-control"
+						placeholder="Téléphone" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un numéro de
+						téléphone !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:street">Rue
+						:</label> <input jsf:id="street" type="text"
+						jsf:value="#{projectAddingView.street}" class="form-control"
+						placeholder="Rue" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un nom de rue !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:streetNum">Numéro
+						de rue :</label> <input jsf:id="streetNum" type="text"
+						jsf:value="#{projectAddingView.streetNum}" class="form-control"
+						placeholder="Numéro de rue" jsf:required="true"
+						required="required" />
+					<div class="invalid-feedback">Veuillez entrer un numéro de
+						rue !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:postalCode">Code
+						postal :</label> <input jsf:id="postalCode" type="text"
+						jsf:value="#{projectAddingView.postalCode}" class="form-control"
+						placeholder="Code postal" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un code postal
+						!</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:locality">Localité
+						:</label> <input jsf:id="locality" type="text"
+						jsf:value="#{projectAddingView.locality}" class="form-control"
+						placeholder="Localité" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer une localité !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold" for="projectAddingForm\:country">Pays
+						:</label> <input jsf:id="country" type="text"
+						jsf:value="#{projectAddingView.country}" class="form-control"
+						placeholder="Pays" jsf:required="true" required="required" />
+					<div class="invalid-feedback">Veuillez entrer un pays !</div>
+				</div>
+				<div class="form-group">
+					<label class="font-weight-bold"
+						for="projectAddingForm\:uploadedFile">Image :</label> <input
+						type="file" jsf:id="uploadedFile"
+						jsf:value="#{projectAddingView.uploadedFile}" accept="image/*"
+						class="form-control" required="required" />
+					<div class="invalid-feedback">Veuillez ajouter une image !</div>
+				</div>
+				<a class="btn btn-primary addingModal"
+					data-target="#addingModalProject" data-toggle="modal" href="#">Ajouter
+					un projet</a>
+				<!-- Modal -->
+				<div class="modal fade" id="addingModalProject" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Ajout d'un nouveau projet</h4>
+								<button type="button" class="close" data-dismiss="modal">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p>Vous ne pourrez plus modifier votre projet après l'ajout.
+									Voulez-vous continuer ?</p>
+							</div>
+							<div class="modal-footer">
+								<input type="submit" jsf:action="#{projectAddingView.upload}"
+									class="btn btn-primary" value="Confirmer" />
+								<button class="btn btn-secondary" data-dismiss="modal"
+									type="button">Annuler</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</main>
+	</ui:define>
+</ui:composition>

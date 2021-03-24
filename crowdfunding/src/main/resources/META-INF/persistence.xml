@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+
+	<persistence-unit name="crowdfunding_JTA"
+		transaction-type="JTA">
+		<jta-data-source>jdbc/crowdfunding</jta-data-source>
+		<class>be.helha.crowdfunding.entities.User</class>
+		<class>be.helha.crowdfunding.entities.Group</class>
+		<class>be.helha.crowdfunding.entities.Address</class>
+		<class>be.helha.crowdfunding.entities.Project</class>
+		<class>be.helha.crowdfunding.entities.Donation</class>
+
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+	</persistence-unit>
+
+	<persistence-unit name="crowdfunding_LOCAL"
+		transaction-type="RESOURCE_LOCAL">
+		<class>be.helha.crowdfunding.entities.User</class>
+		<class>be.helha.crowdfunding.entities.Group</class>
+		<class>be.helha.crowdfunding.entities.Address</class>
+		<class>be.helha.crowdfunding.entities.Project</class>
+		<class>be.helha.crowdfunding.entities.Donation</class>
+
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver"
+				value="com.mysql.jdbc.Driver" />
+			<!-- <property name="javax.persistence.jdbc.url" value="jdbc:mysql://54.76.209.52:3306/dbacrowdfunding"/> -->
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://localhost:3306/dbacrowdfunding" />
+			<property
+				name="javax.persistence.schema-generation.database.action"
+				value="drop-and-create" />
+
+			<property name="javax.persistence.jdbc.user" value="test" />
+			<property name="javax.persistence.jdbc.password"
+				value="test" />
+
+		</properties>
+	</persistence-unit>
+
+</persistence>

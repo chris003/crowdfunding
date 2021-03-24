@@ -1,0 +1,68 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<ui:define name="title">Détail du don de "#{usersAdminView.donation.user.firstName} #{usersAdminView.donation.user.lastName}" pour le projet "#{usersAdminView.donation.project.entitled}"</ui:define>
+	<ui:define name="content">
+		<main role="main" class="container">
+			<h1>Détail du don de "#{usersAdminView.donation.user.firstName}
+				#{usersAdminView.donation.user.lastName}" pour le projet
+				"#{usersAdminView.donation.project.entitled}"</h1>
+			<br />
+			<h:form id="donationDetailForm" class="was-validated">
+				<div class="form-group">
+					<label class="font-weight-bold" for="donationDetailForm\:amount">Montant
+						du don (fait le #{usersAdminView.donation.frenchFormatDate}):</label>
+					<div class="input-group">
+						<input jsf:id="amount" type="number" step="0.01" min="0.01"
+							jsf:value="#{usersAdminView.amount}" class="form-control"
+							placeholder="Montant du don" jsf:required="true"
+							required="required" />
+						<div class="input-group-append">
+							<span class="input-group-text"><i class="fas fa-euro-sign"></i></span>
+						</div>
+					</div>
+					<div class="invalid-feedback">Veuillez indiquer le montant du
+						don !</div>
+				</div>
+				<a class="btn btn-primary updatingModal"
+					data-target="#updatingModalDonation" data-toggle="modal" href="#">Modifier</a>
+				<!-- Modal -->
+				<div class="modal fade" id="updatingModalDonation" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Modification du don d'un montant de
+									#{usersAdminView.donation.amount}€</h4>
+								<button type="button" class="close" data-dismiss="modal">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p>Veuillez confirmer la modification du montant</p>
+							</div>
+							<div class="modal-footer">
+								<input type="submit"
+									jsf:action="#{usersAdminView.modifieDonation}"
+									class="btn btn-primary" value="Modifier" />
+								<button class="btn btn-secondary" data-dismiss="modal"
+									type="button">Annuler</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a class="btn btn-secondary"
+					href="/crowdfunding/admin/userDonationsList.xhtml" role="button">Retour</a>
+			</h:form>
+		</main>
+	</ui:define>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".flashMessage").delay(5000).slideUp(3000);
+		});
+	</script>
+</ui:composition>

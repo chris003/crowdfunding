@@ -1,0 +1,158 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<ui:define name="title">Description du projet #{projectsView.project.entitled}</ui:define>
+	<ui:define name="content">
+		<main role="main" class="container">
+			<h1 id="projectTitle"
+				class="secondaryColorTheme font-weight-bold text-center">#{projectsView.project.entitled}</h1>
+			<h3 id="projectSlogan" class="text-center">#{projectsView.project.slogan}</h3>
+			<br />
+			<div class="row">
+				<div class="col-8">
+					<image
+						src="/crowdfunding/images/#{projectsView.project.imageEntitled}"
+						width="100%" height="500rem"></image>
+				</div>
+				<div class="col-4">
+					<div>
+						<h1 style="display: inline;"
+							class="secondaryColorTheme font-weight-bold">
+							<span class="currency">#{projectsView.project.totalContributions}</span>€
+						</h1>
+						<h5 class="secondaryColorTheme font-weight-bold"
+							style="display: inline;">collectés</h5>
+					</div>
+					<hr align="left" width="50%" />
+					<div>
+						<h1 style="display: inline;"
+							class="secondaryColorTheme font-weight-bold">
+							<span class="currency">#{projectsView.project.amount}</span>€
+						</h1>
+						<h5 class="secondaryColorTheme font-weight-bold"
+							style="display: inline;">attendus</h5>
+					</div>
+					<hr align="left" width="50%" />
+					<div>
+						<h1 style="display: inline;"
+							class="secondaryColorTheme font-weight-bold">#{projectsView.project.totalContributors}</h1>
+						<h5 class="secondaryColorTheme font-weight-bold"
+							style="display: inline;">contributeur(s)</h5>
+					</div>
+					<hr align="left" width="50%" />
+					<div>
+						<h1 style="display: inline;"
+							class="secondaryColorTheme font-weight-bold">#{projectsView.project.remainingDays}</h1>
+						<h5 class="secondaryColorTheme font-weight-bold"
+							style="display: inline;">jour(s) restant(s)</h5>
+					</div>
+					<hr align="left" width="50%" />
+					<div class="progress">
+						<div class="progress-bar dynamic#{project.id}" role="progressbar"
+							aria-valuenow="#{projectsView.project.percentContributions}"
+							aria-valuemin="0" aria-valuemax="100"
+							style="background-color: rgb(51, 204, 204); width: #{projectsView.project.percentContributions};" />
+						#{projectsView.project.percentContributions}%
+					</div>
+					<hr align="left" width="50%" />
+					<small class="font-weight-bold">Les contributions seront
+						terminées le #{projectsView.project.frenchEndingDate}</small>
+					<hr align="left" width="50%" />
+					<h:form>
+						<a class="btn btn-danger removingModal"
+							data-target="#removingModal#{projectsView.project.id}"
+							data-toggle="modal" href="#">Supprimer</a>
+						<!-- Modal -->
+						<div class="modal fade"
+							id="removingModal#{projectsView.project.id}" role="dialog">
+							<div class="modal-dialog">
+
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">Supression du projet
+											"#{projectsView.project.entitled}"</h4>
+										<button type="button" class="close" data-dismiss="modal">
+											<i class="fas fa-times"></i>
+										</button>
+									</div>
+									<div class="modal-body">
+										<p>Etes-vous sûr de vouloir supprimer le projet
+											"#{projectsView.project.entitled}" ?</p>
+									</div>
+									<div class="modal-footer">
+										<h:commandButton value="Oui"
+											action="#{projectsView.removeProject(projectsView.project)}"
+											class="btn btn-danger" />
+										<a class="btn btn-secondary" data-dismiss="modal"
+											type="button">Non</a>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<a class="btn btn-secondary"
+							href="/crowdfunding/user/projectsList.xhtml" role="button">Retour</a>
+					</h:form>
+				</div>
+			</div>
+			<hr width="100%" />
+			<div class="row">
+				<div class="col-4">
+					<h3 class="secondaryColorTheme text-left">Description du
+						projet</h3>
+					<div class="text-secondary font-weight-bold">#{projectsView.project.description}</div>
+				</div>
+				<div class="col-4">
+					<h3 class="secondaryColorTheme text-left">Porteur de projet</h3>
+					<div class="text-secondary font-weight-bold">#{projectsView.project.projectLeader}</div>
+				</div>
+				<div class="col-4">
+					<h3 class="secondaryColorTheme text-left">Contact</h3>
+					<div class="text-left font-weight-bold">
+						<ul style="margin: 0; padding: 0;">
+							<li>#{projectsView.project.email}</li>
+							<li>#{projectsView.project.telephone}</li>
+							<li>#{projectsView.project.address}</li>
+						</ul>
+					</div>
+				</div>
+				<hr width="100%" />
+			</div>
+
+		</main>
+	</ui:define>
+	<ui:define name="scriptJS">
+		<script type="text/javascript">
+			$(document).ready(
+					function() {
+						var current_progress = 0;
+						var interval = setInterval(function() {
+							current_progress += 1;
+							$(".dynamic#{project.id}").css("width", current_progress + "%")
+							if (current_progress >= $(".dynamic").attr(
+									"aria-valuenow"))
+								clearInterval(interval);
+						}, 10);
+						$(".flashMessage").delay(5000).slideUp(3000);
+						setTimeout(function() {
+							location.reload();
+						}, 30000);
+						title = $("#projectTitle").text();
+						slogan = $("#projectSlogan").text();
+						title = title.toUpperCase();
+						slogan = slogan.toUpperCase();
+						$("#projectTitle").text(title);
+						$("#projectSlogan").text(slogan);
+						$(".currency").each(function() {
+							value = $(this).text();
+							value = parseFloat(value).toLocaleString();
+							$(this).text(value);
+						});
+					});
+		</script>
+	</ui:define>
+</ui:composition>

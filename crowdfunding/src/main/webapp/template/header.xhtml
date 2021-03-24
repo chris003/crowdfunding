@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
+<body>
+	ALL TAGS ABOVE THIS LINE WILL BE REMOVED BY JSF
+	<ui:composition>
+		<c:set var="userMail" scope="session" value="#{User.email}" />
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+		<c:choose>
+			<c:when
+				test="${empty User or userMail != 'admin@demoCrowdfunding.be'}">
+				<a class="navbar-brand font-weight-bold font-italic"
+					href="/crowdfunding"><span class="colorTheme">CrowdFunding</span></a>
+			</c:when>
+			<c:when test="${userMail == 'admin@demoCrowdfunding.be'}">
+				<a class="navbar-brand font-weight-bold font-italic"
+					href="/crowdfunding/admin/usersList.xhtml"><span
+					class="colorTheme">CrowdFunding</span></a>
+			</c:when>
+		</c:choose>
+		<div class="collapse navbar-collapse" id="#">
+			<ul class="navbar-nav mr-auto">
+				<c:choose>
+					<c:when
+						test="${empty User or userMail != 'admin@demoCrowdfunding.be'}">
+						<li class="nav-item"><a class="nav-link" href="/crowdfunding"><i
+								class="fas fa-list"></i> Les projets</a></li>
+						<c:if test="${not empty User}">
+							<li class="nav-item"><a class="nav-link"
+								href="/crowdfunding/user/projectAdding.xhtml"><i
+									class="fas fa-file-signature"></i> Déposer un projet</a></li>
+
+						</c:if>
+						<li class="nav-item"><a class="nav-link"
+							href="/crowdfunding/about.xhtml"> <i
+								class="fas fa-info-circle"></i> A propos
+						</a></li>
+					</c:when>
+					<c:when test="${userMail == 'admin@demoCrowdfunding.be'}">
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#" id="navbardrop"
+							data-toggle="dropdown"> <i class="fas fa-tasks"></i> Gérer
+						</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item"
+									href="/crowdfunding/admin/usersList.xhtml">Gérer les
+									utilisateurs</a> <a class="dropdown-item"
+									href="/crowdfunding/admin/donationsList.xhtml">Gérer les
+									dons</a> <a class="dropdown-item"
+									href="/crowdfunding/admin/projectsList.xhtml">Gérer les
+									projets</a>
+							</div></li>
+					</c:when>
+				</c:choose>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<c:choose>
+					<c:when
+						test="${not empty User and userMail != 'admin@demoCrowdfunding.be'}">
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#" id="navbardrop"
+							data-toggle="dropdown"> <i class="fas fa-user"></i>
+								#{User.firstName} #{User.lastName}
+						</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="/crowdfunding/user/profil.xhtml">Mon
+									profil</a> <a class="dropdown-item"
+									href="/crowdfunding/user/password.xhtml">Modifier mon mot
+									de passe</a> <a class="dropdown-item"
+									href="/crowdfunding/user/projectsList.xhtml">Mes projets</a> <a
+									class="dropdown-item"
+									href="/crowdfunding/user/donationsList.xhtml">Mes dons</a>
+							</div></li>
+					</c:when>
+					<c:when
+						test="${not empty User and userMail == 'admin@demoCrowdfunding.be'}">
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#" id="navbardrop"
+							data-toggle="dropdown"> <i class="fas fa-user"></i>
+								#{User.firstName} #{User.lastName}
+						</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="/crowdfunding/admin/profil.xhtml">Mon
+									profil</a> <a class="dropdown-item"
+									href="/crowdfunding/admin/password.xhtml">Modifier mon mot
+									de passe</a>
+							</div></li>
+					</c:when>
+				</c:choose>
+				<c:choose>
+					<c:when test="${empty User}">
+						<li class="nav-item"><a href="/crowdfunding/signin.xhtml"
+							class="nav-link"> <i class="fas fa-user"></i> Connexion
+						</a></li>
+					</c:when>
+					<c:otherwise test="${not empty User}">
+						<li class="nav-item"><h:form>
+								<a jsf:action="#{loginView.logout}" class="nav-link"><i
+									class="fas fa-sign-out-alt"></i> Déconnexion</a>
+							</h:form></li>
+					</c:otherwise>
+				</c:choose>
+			</ul>
+		</div>
+		</nav>
+		<div>
+			<h:messages globalOnly="true" layout="table"
+				class="flashMessage font-weight-bold text-center"
+				errorStyle="background-color: #f2dede;
+  border-color: #ebccd1;border-top-color: #e4b9c0;
+  color: #a94442;"
+				fatalStyle="background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;border-top-color: #c9e2b3;" />
+		</div>
+	</ui:composition>
+	ALL TAGS BELOW THIS LINE WILL BE REMOVED BY JSF
+</body>
+</html>
